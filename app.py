@@ -1,19 +1,17 @@
 # Import Dependencies
 import sqlalchemy
+from sqlalchemy import Column, Integer, String, Float, Boolean
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 from flask import Flask, jsonify, render_template
 import psycopg2
 from credentials import username, password
 
-# Database Setup
 engine = create_engine(f"postgresql+psycopg2://{username}:{password}@localhost:5432/soccer_db")
-
-# Set up a base using the existing table in the database
 Base = automap_base()
 Base.prepare(autoload_with=engine)
-Base.classes.keys()
+Teams = Base.classes.teams
 
 # Flask Setup
 app = Flask(__name__)
@@ -23,24 +21,47 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+# @app.route("/json")
+# def jsonified():
+#     return jsonify()
 
+    
+# @app.route("/geodata")
+# def geodata():
 
-# @app.route("/api/v1.0/teams")
-# def teams():
-#     # Create our session (link) from Python to the DB
-#     session = Session(engine)
+@app.route("/jsondata")
+def jsondata():
+    session = Session(engine)
+    results = session.query(Teams.country, Teams.league_id, Teams.league, Teams.team, Teams.average_age, Teams.currency, Teams.market_value, Teams.lat, Teams.long, 
+                             Teams.rk, Teams.mp, Teams.w, Teams.d, Teams.l, Teams.gf, Teams.ga, Teams.gd, Teams.pts, Teams.pts_per_match).all()
 
-#     """Return a list of all team names"""
-#     # Query all teams
-#     results = session.query(Teams).all()
+    session.close()
 
-#     session.close()
+    all_teams = []
+    for country, league_id, league, team, average_age, currency, market_value, lat, long, rk, mp, w, d, l, gf, ga, gd, pts, pts_per_match in results:
+        team_dict = {}
+        team_dict["country"] = country
+        team_dict["league_id"] = league_id
+        team_dict["league"] = league
+        team_dict["team"] = team
+        team_dict["average_age"] = average_age
+        team_dict["currency"] = currency
+        team_dict["market_value"] = market_value
+        team_dict["lat"] = lat
+        team_dict["long"] = long
+        team_dict["rk"] = rk
+        team_dict["mp"] = mp
+        team_dict["w"] = w
+        team_dict["d"] = d
+        team_dict["l"] = l
+        team_dict["gf"] = gf
+        team_dict["ga"] = ga
+        team_dict["gd"] = gd
+        team_dict["pts"] = pts
+        team_dict["pts_per_match"] = pts_per_match
+        all_teams.append(team_dict)
 
-#     # Convert list of tuples into normal list
-#     all_names = list(np.ravel(results))
-
-#     return jsonify(all_names)
-
+    return jsonify(all_teams)
 
 
 if __name__ == '__main__':

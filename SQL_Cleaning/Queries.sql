@@ -3,7 +3,7 @@ create table teams (
 	Country varchar not null,
 	League_ID varchar,
 	League varchar not null,
-	Team varchar not null,
+	Team varchar primary key not null,
 	Average_Age dec,
 	Currency varchar,
 	Market_Value bigint not null,
@@ -20,15 +20,6 @@ create table teams (
 	Pts int,
 	Pts_per_Match dec not null);
 
-drop from teams
-	where id = '11'
-	and MP = 4;
-
-drop from teams
-	where id = '714';
-
-drop from teams
-	where id = '368';
 
 alter table teams
 	drop column id;
