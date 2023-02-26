@@ -3,31 +3,24 @@ import sqlalchemy
 from sqlalchemy import Column, Integer, String, Float, Boolean
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from flask import Flask, jsonify, render_template
 import psycopg2
 from credentials import username, password
+import pandas as pd
+
 
 engine = create_engine(f"postgresql+psycopg2://{username}:{password}@localhost:5432/soccer_db")
 Base = automap_base()
 Base.prepare(autoload_with=engine)
 Teams = Base.classes.teams
 
-# Flask Setup
 app = Flask(__name__)
 
-# Flask Routes
+
 @app.route("/")
 def index():
     return render_template('index.html')
-
-# @app.route("/json")
-# def jsonified():
-#     return jsonify()
-
-    
-# @app.route("/geodata")
-# def geodata():
 
 @app.route("/jsondata")
 def jsondata():
@@ -63,6 +56,13 @@ def jsondata():
 
     return jsonify(all_teams)
 
+@app.route("/chart")
+def chart():
+    return render_template('chart.html')
+
+@app.route("/pie")
+def pie():
+    return render_template('pie.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
