@@ -4,7 +4,7 @@ Duy Nguyen,
 Mojtaba Zadaskar,
 John Francavilla
 
-                                                        Soccer, is the money worth the performance?
+                                                       Soccer, is the money worth the performance?
 
 In this project our team has decided to take the market-value of different soccer teams around the world and compare the price paid with their overall performance. 
 
