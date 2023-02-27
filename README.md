@@ -1,7 +1,7 @@
 # Project-3-Team-8 
-Eric Yang
-Duy Nguyen
-Mojtaba Zadaskar
+Eric Yang,
+Duy Nguyen,
+Mojtaba Zadaskar,
 John Francavilla
 
                                                         Soccer, is the money worth the performance?
